@@ -31,15 +31,14 @@ exports.getAllblogs = (req, res) => {
         res.json(blogs)
     })
 }
-//get article singleBlog on slug
+//get singleBlog article  on slug
 exports.singleBlog = (req, res) => {
     const { slug } = req.params
     Blogs.findOne({ slug }).exec((err, blog) => {
         res.json(blog)
     })
 }
-
-
+//remove singleBlog article  on slug
 exports.remove = (req, res) => {
     const { slug } = req.params
     Blogs.findOneAndRemove({ slug }).exec((err, blog) => {
@@ -47,5 +46,14 @@ exports.remove = (req, res) => {
         res.json({
             message: "delete done"
         })
+    })
+}
+//update singleBlog article  on slug(send=>title,content,author)
+exports.update = (req, res) => {
+    const { slug } = req.params
+    const { title, content, author } = req.body
+    Blogs.findOneAndUpdate({ slug }, { title, content, author }, { new: true }).exec((err, blog) => {
+        if (err) console.log(err)
+        res.json(blog)
     })
 }

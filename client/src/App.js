@@ -30,9 +30,17 @@ function App() {
       confirmButtonText: 'Yes, delete it!'
     }).then((result) => {
       if (result.isConfirmed) {
-        Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+        deleteBlog(slug)
       }
     })
+  }
+
+  const deleteBlog = (slug) => {
+    axios
+      .delete(`${process.env.REACT_APP_API}/blog/${slug}`)
+      .then(response => {
+        Swal.fire('Deleted!', 'Your file has been deleted.', 'success')
+      }).catch(err => console.log(err));
   }
 
   return (
@@ -46,7 +54,7 @@ function App() {
             </Link>
             <p>{blog.content.substring(0, 300)}...</p>
             <p className="text-muted">Author: {blog.author}, created at: {new Date(blog.createdAt).toLocaleString()}</p>
-            <button className="btn btn-outline-success">update</button> &nbsp;
+            <Link className="btn btn-outline-success" to={`/blog/edit/${blog.slug}`}>update</Link> &nbsp;
             <button className="btn btn-outline-danger" onClick={() => confirmDelete(blog.slug)}>remove</button>
           </div>
         </div>
