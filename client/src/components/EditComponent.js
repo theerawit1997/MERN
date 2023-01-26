@@ -13,6 +13,10 @@ const EditComponent = (props) => {
 
     const { title, content, author, slug } = state
 
+    const inputValue = name => event => {
+        setState({ ...state, [name]: event.target.value });
+    }
+
     useEffect(() => {
         axios
             .get(`${process.env.REACT_APP_API}/blog/${props.match.params.slug}`)
@@ -23,6 +27,28 @@ const EditComponent = (props) => {
             .catch(err => alert(err))
         // eslint-disable-next-line
     }, [])
+
+    const submitForm = (e) => {
+        e.preventDefault();
+        console.log("API URL = ", process.env.REACT_APP_API)
+        axios
+            .put(`${process.env.REACT_APP_API}/blog/${slug}`, { title, content, author })
+            .then(response => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Done!!',
+                    text: 'Update success.'
+                })
+                setState({ ...state, title: "", content: "", author: "" })
+            }).catch(err => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.error,
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+            })
+    }
 
     const showUpdateForm = () => (
         <form onSubmit={submitForm}>
@@ -51,31 +77,6 @@ const EditComponent = (props) => {
             <input type="submit" value="record" className="btn-primary"></input>
         </form>
     )
-
-    const inputValue = name => event => {
-        setState({ ...state, [name]: event.target.value });
-    }
-    const submitForm = (e) => {
-        e.preventDefault();
-        console.log("API URL = ", process.env.REACT_APP_API)
-        axios
-            .put(`${process.env.REACT_APP_API}/blog/${slug}`, { title, content, author })
-            .then(response => {
-                Swal.fire({
-                    icon: 'success',
-                    title: 'Done!!',
-                    text: 'Update success.'
-                })
-                setState({ ...state, title: "", content: "", author: "" })
-            }).catch(err => {
-                Swal.fire({
-                    icon: 'error',
-                    title: 'Oops...',
-                    text: err.response.data.error,
-                    footer: '<a href="">Why do I have this issue?</a>'
-                })
-            })
-    }
 
     return (
         <div className="container p-5">
