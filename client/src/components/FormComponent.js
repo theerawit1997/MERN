@@ -25,14 +25,23 @@ const FormComponent = () => {
         axios
             .post(`${process.env.REACT_APP_API}/create`, { title, content, author })
             .then(response => {
-                Swal.fire('แจ้งเตือน', "บันทึกข้อมูลบทความเรียบร้อย", 'success')
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Success!!',
+                    text: 'Data has been saved.'
+                })
                 setState({ ...state, title: "", author: "" })
                 setContent("")
-            })
-            .catch(err => {
-                Swal.fire('แจ้งเตือน', err.response.data.error, 'error')
+            }).catch(err => {
+                // alert(err.response.data.error)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.error,
+                })
             })
     }
+
     return (
         <div className="container p-5">
             <NavbarComponent></NavbarComponent>
