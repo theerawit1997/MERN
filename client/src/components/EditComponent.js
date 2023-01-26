@@ -10,7 +10,8 @@ const EditComponent = (props) => {
         author: "",
         slug: ""
     })
-    const { title, content, author } = state
+
+    const { title, content, author, slug } = state
 
     useEffect(() => {
         axios
@@ -23,36 +24,64 @@ const EditComponent = (props) => {
         // eslint-disable-next-line
     }, [])
 
+    const showUpdateForm = () => (
+        <form onSubmit={submitForm}>
+            <div className="form-group">
+                <label>Article title</label>
+                <input type="text" className="form-control"
+                    value={title}
+                    onChange={inputValue("title")}>
+                </input>
+            </div>
+            <div className="form-group">
+                <label>details</label>
+                <textarea className="form-control"
+                    value={content}
+                    onChange={inputValue("content")}>
+                </textarea>
+            </div>
+            <div className="form-group">
+                <label>Author</label>
+                <input type="text" className="form-control"
+                    value={author}
+                    onChange={inputValue("author")}>
+                </input>
+            </div>
+            <br></br>
+            <input type="submit" value="record" className="btn-primary"></input>
+        </form>
+    )
+
     const inputValue = name => event => {
         setState({ ...state, [name]: event.target.value });
     }
     const submitForm = (e) => {
-        // e.preventDefault();
-        // console.log("API URL = ", process.env.REACT_APP_API)
-        // axios
-        //     .post(`${process.env.REACT_APP_API}/create`, { title, content, author })
-        //     .then(response => {
-        //         Swal.fire({
-        //             icon: 'success',
-        //             title: 'Success!!',
-        //             text: 'Data has been saved.'
-        //         })
-        //         setState({ ...state, title: "", content: "", author: "" })
-        //     }).catch(err => {
-        //         Swal.fire({
-        //             icon: 'error',
-        //             title: 'Oops...',
-        //             text: err.response.data.error,
-        //             footer: '<a href="">Why do I have this issue?</a>'
-        //         })
-        //     })
+        e.preventDefault();
+        console.log("API URL = ", process.env.REACT_APP_API)
+        axios
+            .put(`${process.env.REACT_APP_API}/blog/${slug}`, { title, content, author })
+            .then(response => {
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Done!!',
+                    text: 'Update success.'
+                })
+                setState({ ...state, title: "", content: "", author: "" })
+            }).catch(err => {
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Oops...',
+                    text: err.response.data.error,
+                    footer: '<a href="">Why do I have this issue?</a>'
+                })
+            })
     }
 
     return (
         <div className="container p-5">
             <NavbarComponent></NavbarComponent>
             <h1>Edit an article</h1>
-            {JSON.stringify(state)}
+            {showUpdateForm()}
         </div>
     );
 }
