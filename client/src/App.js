@@ -1,8 +1,8 @@
 import NavbarComponent from "./components/NavbarComponent";
-import axios from "axios";
-import { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
-import Swal from "sweetalert2";
+import axios from "axios"
+import { useState, useEffect } from "react"
+import { Link } from "react-router-dom"
+import Swal from "sweetalert2"
 
 function App() {
   const [blogs, setBlogs] = useState([])

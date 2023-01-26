@@ -12,10 +12,10 @@ exports.create = (req, res) => {
     switch (true) {
         case !title:
             return res.status(400).json({ error: "Please input title" })
-            break;
+        // break;
         case !content:
             return res.status(400).json({ error: "Please input content" })
-            break;
+        // break;
     }
     //database record
     Blogs.create({ title, content, author, slug }, (err, blog) => {
