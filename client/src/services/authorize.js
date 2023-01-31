@@ -28,3 +28,12 @@ export const getUser = () => {
         }
     }
 }
+export const logout = (next) => {
+    if (window !== "undefined") {
+        sessionStorage.removeItem("token")
+        sessionStorage.removeItem("user")
+        console.log("token,user now remove")
+    }
+    next()
+    console.log("logout")
+}

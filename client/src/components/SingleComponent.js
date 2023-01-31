@@ -15,10 +15,14 @@ const SingleComponent = (props) => {
     }, [])
     return (
         <div className="container p-5">
-            <NavbarComponent></NavbarComponent>
-            <h1>{blog.title}</h1>
-            <p>{blog.content}</p>
-            <p className="text-muted">Author: {blog.author}, created at: {new Date(blog.createdAt).toLocaleString()}</p>
+            <NavbarComponent />
+            {blog &&
+                <div>
+                    <h1>{blog.title}</h1>
+                    {/* <div className="pt-3">{renderHTML(blog.content)}</div> */}
+                    <div className="pt-3">{blog.content}</div>
+                    <p className="text-muted"> Author: {blog.author} , created at : {new Date(blog.createdAt).toLocaleString()}</p>
+                </div>}
         </div>
     )
 }
