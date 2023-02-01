@@ -4,7 +4,7 @@ import axios from "axios";
 import Swal from "sweetalert2";
 import ReactQuill from "react-quill";
 import 'react-quill/dist/quill.snow.css';
-import { getUser } from "../services/authorize";
+import { getToken, getUser } from "../services/authorize";
 
 const FormComponent = () => {
     const [state, setState] = useState({
@@ -17,14 +17,23 @@ const FormComponent = () => {
     const inputValue = name => event => {
         setState({ ...state, [name]: event.target.value });
     }
+
     const submitContent = (event) => {
         setContent(event)
     }
+
     const submitForm = (e) => {
         e.preventDefault();
         console.log("API URL = ", process.env.REACT_APP_API)
         axios
-            .post(`${process.env.REACT_APP_API}/create`, { title, content, author })
+            .post(`${process.env.REACT_APP_API}/create`,
+                { title, content, author },
+                {
+                    headers: {
+                        authorization: `Bearer ${getToken()}`
+                    }
+                }
+            )
             .then(response => {
                 Swal.fire({
                     icon: 'success',
